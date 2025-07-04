@@ -11,7 +11,7 @@
       margin: 0;
       padding: 20px;
     }
-    h1, h2 {
+    h1, h2, h3 {
       text-align: center;
       color: #d35400;
     }
@@ -69,6 +69,17 @@
       font-size: 16px;
       margin: 5px;
     }
+    .back-btn {
+      display: block;
+      margin: 20px auto;
+      background: #bdc3c7;
+      color: black;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -101,6 +112,7 @@
       <button id="buyBtn" onclick="realizarCompra()">Realizar Compra</button>
       <p id="success"></p>
     </div>
+    <button class="back-btn" onclick="volverInicio()">← Volver al inicio</button>
   </div>
 
   <div id="profesional" class="hidden">
@@ -114,13 +126,14 @@
       <input type="text" id="nuevaImagen" placeholder="URL de imagen">
       <button onclick="agregarProducto()">Añadir Producto</button>
     </div>
+    <button class="back-btn" onclick="volverInicio()">← Volver al inicio</button>
   </div>
 
   <script>
     let productos = [];
     let carrito = [];
 
-    // Cargar 50 productos por defecto
+    // Inicializar 50 productos por defecto
     for (let i = 1; i <= 50; i++) {
       productos.push({
         nombre: "Producto Artesanal " + i,
@@ -130,20 +143,30 @@
     }
 
     function accederComoComprador() {
-      document.getElementById("login").classList.add("hidden");
-      document.getElementById("comprador").classList.remove("hidden");
+      mostrarSeccion('comprador');
       mostrarProductosComprador();
     }
 
     function verificarClave() {
       const clave = document.getElementById("clave").value;
       if (clave === "happy123") {
-        document.getElementById("login").classList.add("hidden");
-        document.getElementById("profesional").classList.remove("hidden");
+        mostrarSeccion('profesional');
         mostrarProductosAdmin();
       } else {
         document.getElementById("error").textContent = "Contraseña incorrecta";
       }
+    }
+
+    function volverInicio() {
+      mostrarSeccion('login');
+    }
+
+    function mostrarSeccion(idMostrar) {
+      const secciones = ['login', 'comprador', 'profesional'];
+      secciones.forEach(id => {
+        document.getElementById(id).classList.add("hidden");
+      });
+      document.getElementById(idMostrar).classList.remove("hidden");
     }
 
     // ----------------------- COMPRADOR ----------------------
@@ -199,7 +222,6 @@
     }
 
     // ----------------------- PROFESIONAL ----------------------
-
     function mostrarProductosAdmin() {
       const cont = document.getElementById("adminProductos");
       cont.innerHTML = "";
